@@ -1,0 +1,79 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 Raffael Herzog
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+//ext {
+//    antlrVersion = '4.5'
+//}
+
+apply plugin:sangria.PreparedShadow
+//apply from:'shadowing.gradle'
+
+//[ANTLR] apply from:'antlr4.gradle'
+
+configurations {
+    compile.extendsFrom loggingApi
+}
+dependencies {
+    compile parent.project('annotations')
+    compile project(':commons')
+    compile project(':logging')
+    compile project(':dynamic')
+    compile project(':eventbus')
+
+//    shadowed group:'com.google.inject', name:'guice', version:guiceVersion
+//    shadowed group:'com.google.inject.extensions', name:'guice-multibindings', version:guiceVersion
+//    shadowed group:'com.google.inject.extensions', name:'guice-throwingproviders', version:guiceVersion
+//    shadowed group:'com.google.inject', name:'guice', version:guiceVersion
+
+//    shadowed group:'com.google.guava', name:'guava', version:'18.0'
+//    shadowed group:'org.ow2.asm', name:'asm-debug-all', version:'5.0.3'
+//    shadowed group:'args4j', name:'args4j', version:'2.0.29'
+//    shadowed group:'org.antlr', name:'antlr4-runtime', version:antlrVersion
+}
+
+//shadowRelocations.putAll([
+//        // guava
+//        'com.google.common': 'ch.raffael.sangria.libs.guava',
+//        'com.google.thirdparty': 'ch.raffael.sangria.libs.guava._thirdparty',
+//
+//        // asm
+//        'org.objectweb.asm': 'ch.raffael.sangria.libs.asm',
+//
+//        // ars4j
+//        'org.kohsuke.args4j': 'ch.raffael.sangria.libs.args4j',
+//
+//        //[ANTLR]  antlr4-runtime
+//        //'org.antlr.v4.runtime': 'ch.raffael.sangria.libs.internal.antlr',
+//        //'org.abego.treelayout': 'ch.raffael.sangria.libs.internal.antlr.treelayout'
+//])
+
+preparedShadowJar {
+//    relocate 'com.google.common', 'ch.raffael.sangria.libs.guava'
+//    relocate 'com.google.thirdparty', 'ch.raffael.sangria.libs.guava.thirdparty'
+//    relocate 'org.objectweb.asm', 'ch.raffael.sangria.libs.asm'
+    relocate 'org.kohsuke.args4j', 'ch.raffael.sangria.libs.args4j'
+}
+
+//develEnv.dependsOn tasks.shadowedLibs, tasks.shadowedLibsSources
+//[ANTLR] , tasks.antlr
+

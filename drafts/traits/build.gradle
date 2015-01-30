@@ -1,0 +1,138 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 Raffael Herzog
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+dependencies {
+    compile project(':dynamic')
+    compile project(':logging')
+}
+
+// todo: tests disable due to gradle bug; gradle crashes on visitTypeAnnotation()
+test.onlyIf { false }
+/*
+:drafts:traits:test FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':drafts:traits:test'.
+> failed to read class file /home/rherzog/Entwicklung/Privat/sangria/drafts/traits/target/classes/test/ch/raffael/sangria/traits/example/Dog.class
+
+* Try:
+Run with --info or --debug option to get more log output.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':drafts:traits:test'.
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:69)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:46)
+        at org.gradle.api.internal.tasks.execution.PostExecutionAnalysisTaskExecuter.execute(PostExecutionAnalysisTaskExecuter.java:35)
+        at org.gradle.api.internal.tasks.execution.SkipUpToDateTaskExecuter.execute(SkipUpToDateTaskExecuter.java:64)
+        at org.gradle.api.internal.tasks.execution.ValidatingTaskExecuter.execute(ValidatingTaskExecuter.java:58)
+        at org.gradle.api.internal.tasks.execution.SkipEmptySourceFilesTaskExecuter.execute(SkipEmptySourceFilesTaskExecuter.java:42)
+        at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:52)
+        at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:53)
+        at org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter.execute(ExecuteAtMostOnceTaskExecuter.java:43)
+        at org.gradle.api.internal.AbstractTask.executeWithoutThrowingTaskFailure(AbstractTask.java:305)
+        at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.executeTask(AbstractTaskPlanExecutor.java:79)
+        at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.processTask(AbstractTaskPlanExecutor.java:63)
+        at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.run(AbstractTaskPlanExecutor.java:51)
+        at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor.process(DefaultTaskPlanExecutor.java:23)
+        at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter.execute(DefaultTaskGraphExecuter.java:88)
+        at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:29)
+        at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:62)
+        at org.gradle.execution.DefaultBuildExecuter.access$200(DefaultBuildExecuter.java:23)
+        at org.gradle.execution.DefaultBuildExecuter$2.proceed(DefaultBuildExecuter.java:68)
+        at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:32)
+        at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:62)
+        at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:55)
+        at org.gradle.initialization.DefaultGradleLauncher.doBuildStages(DefaultGradleLauncher.java:149)
+        at org.gradle.initialization.DefaultGradleLauncher.doBuild(DefaultGradleLauncher.java:106)
+        at org.gradle.initialization.DefaultGradleLauncher.run(DefaultGradleLauncher.java:86)
+        at org.gradle.launcher.exec.InProcessBuildActionExecuter$DefaultBuildController.run(InProcessBuildActionExecuter.java:80)
+        at org.gradle.launcher.cli.ExecuteBuildAction.run(ExecuteBuildAction.java:33)
+        at org.gradle.launcher.cli.ExecuteBuildAction.run(ExecuteBuildAction.java:24)
+        at org.gradle.launcher.exec.InProcessBuildActionExecuter.execute(InProcessBuildActionExecuter.java:36)
+        at org.gradle.launcher.exec.InProcessBuildActionExecuter.execute(InProcessBuildActionExecuter.java:26)
+        at org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(ExecuteBuild.java:47)
+        at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(WatchForDisconnection.java:35)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(ResetDeprecationLogger.java:24)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.StartStopIfBuildAndStop.execute(StartStopIfBuildAndStop.java:33)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call(ForwardClientInput.java:71)
+        at org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call(ForwardClientInput.java:69)
+        at org.gradle.util.Swapper.swap(Swapper.java:38)
+        at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:69)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:60)
+        at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:70)
+        at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:34)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.DaemonHygieneAction.execute(DaemonHygieneAction.java:39)
+        at org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed(DaemonCommandExecution.java:119)
+        at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:46)
+        at org.gradle.launcher.daemon.server.DaemonStateCoordinator$1.run(DaemonStateCoordinator.java:246)
+        at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+Caused by: org.gradle.api.GradleException: failed to read class file /home/rherzog/Entwicklung/Privat/sangria/drafts/traits/target/classes/test/ch/raffael/sangria/traits/example/Dog.class
+        at org.gradle.api.internal.tasks.testing.detection.AbstractTestFrameworkDetector.classVisitor(AbstractTestFrameworkDetector.java:119)
+        at org.gradle.api.internal.tasks.testing.junit.JUnitDetector.processTestClass(JUnitDetector.java:38)
+        at org.gradle.api.internal.tasks.testing.detection.AbstractTestFrameworkDetector.processTestClass(AbstractTestFrameworkDetector.java:128)
+        at org.gradle.api.internal.tasks.testing.detection.DefaultTestClassScanner$1.visitClassFile(DefaultTestClassScanner.java:56)
+        at org.gradle.api.internal.tasks.testing.detection.DefaultTestClassScanner$ClassFileVisitor.visitFile(DefaultTestClassScanner.java:76)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:157)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:172)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:172)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:172)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:172)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.walkDir(DirectoryFileTree.java:172)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.visitFrom(DirectoryFileTree.java:125)
+        at org.gradle.api.internal.file.collections.DirectoryFileTree.visit(DirectoryFileTree.java:115)
+        at org.gradle.api.internal.file.collections.FileTreeAdapter.visit(FileTreeAdapter.java:96)
+        at org.gradle.api.internal.file.CompositeFileTree.visit(CompositeFileTree.java:54)
+        at org.gradle.api.internal.tasks.testing.detection.DefaultTestClassScanner.detectionScan(DefaultTestClassScanner.java:54)
+        at org.gradle.api.internal.tasks.testing.detection.DefaultTestClassScanner.run(DefaultTestClassScanner.java:48)
+        at org.gradle.api.internal.tasks.testing.processors.TestMainAction.run(TestMainAction.java:43)
+        at org.gradle.api.internal.tasks.testing.detection.DefaultTestExecuter.execute(DefaultTestExecuter.java:75)
+        at org.gradle.api.tasks.testing.Test.executeTests(Test.java:503)
+        at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:63)
+        at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.doExecute(AnnotationProcessingTaskFactory.java:218)
+        at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(AnnotationProcessingTaskFactory.java:211)
+        at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(AnnotationProcessingTaskFactory.java:200)
+        at org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(AbstractTask.java:579)
+        at org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(AbstractTask.java:562)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeAction(ExecuteActionsTaskExecuter.java:80)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:61)
+        ... 54 more
+Caused by: java.lang.RuntimeException
+        at org.objectweb.asm.ClassVisitor.visitTypeAnnotation(Unknown Source)
+        at org.objectweb.asm.ClassReader.accept(Unknown Source)
+        at org.objectweb.asm.ClassReader.accept(Unknown Source)
+        at org.gradle.api.internal.tasks.testing.detection.AbstractTestFrameworkDetector.classVisitor(AbstractTestFrameworkDetector.java:117)
+        ... 81 more
+
+*/
