@@ -22,25 +22,46 @@
  * THE SOFTWARE.
  */
 
-package ch.raffael.sangria.logging;
+package ch.raffael.sangria.logging
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import ch.raffael.sangria.commons.annotations.development.Future;
+import spock.lang.Specification
 
 
 /**
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Future
-public @interface Disable {
+class LoggingSpec extends Specification {
 
-    Class<? extends Annotation>[] value();
+    def "logger() returns logger for caller if outermost class"() {
+      given:
+        def logger = LoggingClass.myLogger()
+
+      expect:
+        logger.name == LoggingClass.name
+    }
+
+    def "logger() returns logger for outermost class for inner classes"() {
+      given:
+        def logger = LoggingClass.InnerLoggingClass.myLogger()
+
+      expect:
+        logger.name == LoggingClass.name
+    }
+
+    def "logger(Class) returns logger for innermost named class on anonymous class"() {
+      given:
+        def logger = Logging.logger(LoggingClass.anonymousClass())
+
+      expect:
+        logger.name == LoggingClass.canonicalName
+    }
+
+    def "logger(Class) returns logger for innermost named class on local class"() {
+      given:
+        def logger = Logging.logger(LoggingClass.localClass())
+
+      expect:
+        logger.name == LoggingClass.canonicalName
+    }
 
 }

@@ -30,6 +30,7 @@ import java.util.Map;
 import ch.raffael.guards.NotNull;
 import ch.raffael.guards.Nullable;
 import ch.raffael.sangria.commons.annotations.development.Future;
+import ch.raffael.sangria.commons.annotations.development.Questionable;
 
 import static java.util.Arrays.asList;
 
@@ -47,11 +48,13 @@ public final class Classes {
     }
 
     @NotNull
-    public static Class<?> callerClass(@NotNull Class<?> calleeClass) {
-        return GET_CALLER.getCallerClass(calleeClass);
+    public static Class<?> callerClass(@NotNull Class<?> calledClass) {
+        return GET_CALLER.getCallerClass(calledClass);
     }
 
     @NotNull
+    @Questionable("While we're using the fastest method possible method to find the caller " +
+            "without using sun.*, it's still not very fast -- this does this twice!")
     public static Class<?> callerClass() {
         return GET_CALLER.getCallerClass(callerClass(Classes.class));
     }
@@ -94,6 +97,20 @@ public final class Classes {
     public static String canonicalNameWithoutPackage(Class<?> clazz) {
         int pos = clazz.getName().indexOf('.');
         return clazz.getCanonicalName().substring(pos + 1);
+    }
+
+    public static Class<?> outermostClass(Class<?> clazz) {
+        while ( clazz.getEnclosingClass() != null ) {
+            clazz = clazz.getEnclosingClass();
+        }
+        return clazz;
+    }
+
+    public static Class<?> componentType(Class<?> clazz) {
+        while ( clazz.isArray() ) {
+            clazz = clazz.getComponentType();
+        }
+        return clazz;
     }
 
     private final static class GetCallerSecurityManager extends SecurityManager {

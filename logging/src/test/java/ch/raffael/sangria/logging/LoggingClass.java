@@ -24,22 +24,34 @@
 
 package ch.raffael.sangria.logging;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import ch.raffael.sangria.commons.annotations.development.Future;
+import org.slf4j.Logger;
 
 
 /**
- * Enable package-level logging for the package.
- *
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
-@Target({ElementType.PACKAGE, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Future
-public @interface PackageLevelLogging {
-    boolean value() default true;
+public class LoggingClass {
+
+    public static Logger myLogger() {
+        return Logging.logger();
+    }
+
+    public static Class<?> anonymousClass() {
+        return new Object() {}.getClass();
+    }
+
+    public static Class<?> localClass() {
+        return new Object() {}.getClass();
+    }
+
+    private static Logger createLogger() {
+        return Logging.logger();
+    }
+
+    public static class InnerLoggingClass {
+        public static Logger myLogger() {
+            return Logging.logger();
+        }
+    }
+
 }

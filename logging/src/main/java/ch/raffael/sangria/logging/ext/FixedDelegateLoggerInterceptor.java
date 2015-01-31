@@ -22,40 +22,25 @@
  * THE SOFTWARE.
  */
 
-package ch.raffael.sangria.logging;
+package ch.raffael.sangria.logging.ext;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import ch.raffael.sangria.commons.annotations.development.Future;
+import org.slf4j.Logger;
 
 
 /**
- * Return a logger as would provided to the given class.
- *
- * ```java
- * {@literal @}LogAs(Bar.class)
- * public class Foo {
- *     private static final Logger log = Logger.logger();
- * }
- * ```
- *
- * is the same as
- *
- * ```java
- * public class Foo {
- *     private static final Logger log = Logger.logger(Bar.class);
- * }
- * ```
- *
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
-@Target({ElementType.TYPE,ElementType.PACKAGE})
-@Retention(RetentionPolicy.RUNTIME)
-@Shadows({}) // actually just shadows *everything*!
-@Future
-public @interface LogAs {
-    Class<?> value();
+public abstract class FixedDelegateLoggerInterceptor extends LoggerInterceptor {
+
+    private final Logger delegate;
+
+    protected FixedDelegateLoggerInterceptor(Logger delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    protected final Logger delegate() {
+        return delegate;
+    }
+
 }

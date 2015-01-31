@@ -30,15 +30,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.raffael.sangria.commons.Classes;
+import ch.raffael.sangria.commons.Suppliers;
 
 
 /**
  * Replacement for `org.slf4j.LoggerFactory`. It may apply some modifications to the logger return
  * based on annotations or caused by plugins.
  *
+ * It also uses {@link ClassValue} to cache loggers.
+ *
+ * @todo Does it really make sense to use {@link ClassValue} for caching loggers?
+ * Loggers are usually static, after all, the possible slowdown for overusing {@link ClassValue}
+ * may overweight the minor performance loss doing the necessary calculations for creating a new
+ * logger.
+ *
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
 public final class Logging {
+
+    @SuppressWarnings("UnusedDeclaration")
+    private static final Logger log = loggingLogger();
+
+    private static final ClassValue<LoggerEntry> LOGGERS = new ClassValue<LoggerEntry>() {
+        @Override
+        protected LoggerEntry computeValue(Class<?> type) {
+            return new LoggerEntry(type);
+        }
+    };
 
     private Logging() {
     }
@@ -50,34 +68,55 @@ public final class Logging {
      * @return A `org.slf4j.Logger`.
      */
     public static Logger logger() {
-        return logger(outermost(Classes.callerClass(Logging.class)));
+        return LOGGERS.get(Classes.componentType(Classes.callerClass(Logging.class))).implicit.get();
     }
 
     /**
      * Returns a logger for the specified class.
      *
-     * @param clazz    The class.
+     * @param realType    The class.
      *
      * @return A `org.slf4j.Logger`.
      */
-    public static Logger logger(Class<?> clazz) {
-        return LoggerFactory.getLogger(clazz);
+    public static Logger logger(Class<?> type) {
+        return LOGGERS.get(Classes.componentType(type)).explicit.get();
     }
 
-    private static Class<?> outermost(Class<?> clazz) {
-        while ( clazz.getEnclosingClass() != null ) {
-            clazz = clazz.getEnclosingClass();
-        }
-        return clazz;
-    }
-
-    private static Logger LOGGING_LOGGER = ((Supplier<Logger>)() -> {
-        String name = Logger.class.getName();
-        int pos = name.lastIndexOf('.');
-        return LoggerFactory.getLogger(name);
-    }).get();
+    private static Logger LOGGING_LOGGER = LoggerFactory.getLogger(Logger.class);
     static Logger loggingLogger() {
         return LOGGING_LOGGER;
+
+    }
+
+    private static class LoggerEntry {
+        private final Class<?> type;
+        final Supplier<Logger> implicit;
+        final Supplier<Logger> explicit;
+        LoggerEntry(Class<?> type) {
+            this.type = type;
+            implicit = Suppliers.lazy(() -> LoggerFactory.getLogger(loggerNameForClass(Classes.outermostClass(this.type))));
+            explicit = Suppliers.lazy(() -> LoggerFactory.getLogger(loggerNameForClass(this.type)));
+        }
+        private static String loggerNameForClass(Class<?> type) {
+            assert !type.isArray();
+            Class<?> loggerType = type;
+            while ( true ) {
+                String name = loggerType.getCanonicalName();
+                if ( name != null ) {
+                    return name;
+                }
+                else {
+                    // it's an anonymous or local class; try the outer class instead
+                    if ( loggerType.getEnclosingClass() != null) {
+                        loggerType = loggerType.getEnclosingClass();
+                    }
+                    else {
+                        // fall back to the original class' "normal" class name
+                        return type.getName();
+                    }
+                }
+            }
+        }
     }
 
 }

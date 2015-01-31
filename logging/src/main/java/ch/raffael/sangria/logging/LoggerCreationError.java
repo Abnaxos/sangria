@@ -24,11 +24,30 @@
 
 package ch.raffael.sangria.logging;
 
+import ch.raffael.sangria.commons.annotations.development.Questionable;
+
+
 /**
+ * Errors during logger creation are considered a catastrophe.
+ *
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
-public enum LogLevel {
+@Questionable("We could also just ignore it, actually ...")
+public class LoggerCreationError extends Error {
 
-    TRACE, DEBUG, INFO, WARN, ERROR
+    public LoggerCreationError() {
+        super();
+    }
 
+    public LoggerCreationError(String message) {
+        super(message);
+    }
+
+    public LoggerCreationError(Throwable cause) {
+        super(cause);
+    }
+
+    public LoggerCreationError(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
