@@ -1,4 +1,4 @@
-package ch.raffael.sangria.cluster.packaging;
+package ch.raffael.sangria.cluster;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 import ch.raffael.sangria.libs.guava.collect.ImmutableMap;
 
-import ch.raffael.sangria.cluster.packaging.security.SecureCodeSourceSupplier;
+import ch.raffael.sangria.cluster.security.SecureCodeSourceSupplier;
 
 
 /**

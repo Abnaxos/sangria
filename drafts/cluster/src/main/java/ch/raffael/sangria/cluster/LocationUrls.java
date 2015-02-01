@@ -1,4 +1,4 @@
-package ch.raffael.sangria.cluster.packaging;
+package ch.raffael.sangria.cluster;
 
 import java.io.File;
 import java.net.MalformedURLException;

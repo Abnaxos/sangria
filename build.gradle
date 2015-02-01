@@ -96,6 +96,7 @@ subprojects {
     ext.slf4jVersion = '1.7.10'
     dependencies {
         provided group:'ch.raffael.guards', name:'guards-api', version:'0.1-SNAPSHOT'
+        provided group:'com.google.code.findbugs', name:'jsr305', version:'3.0.0'
         testCompile project(':test-commons')
 
         groovy group:'org.codehaus.groovy', name:'groovy-all', classifier:'indy', version:'2.3.9'

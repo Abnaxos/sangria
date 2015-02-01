@@ -1,4 +1,4 @@
-package ch.raffael.sangria.cluster.packaging;
+package ch.raffael.sangria.cluster;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import ch.raffael.sangria.libs.guava.base.MoreObjects;
 import ch.raffael.sangria.libs.guava.collect.ForwardingMap;
 import ch.raffael.sangria.libs.guava.collect.ImmutableMap;
-import ch.raffael.sangria.libs.guava.collect.Maps;
 
 
 /**

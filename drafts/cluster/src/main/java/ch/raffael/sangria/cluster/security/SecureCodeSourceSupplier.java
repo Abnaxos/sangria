@@ -1,10 +1,9 @@
-package ch.raffael.sangria.cluster.packaging.security;
+package ch.raffael.sangria.cluster.security;
 
 import java.net.URL;
-import java.security.CodeSource;
 
-import ch.raffael.sangria.cluster.packaging.CodeSourceSupplier;
-import ch.raffael.sangria.cluster.packaging.ResourceResolver;
+import ch.raffael.sangria.cluster.CodeSourceSupplier;
+import ch.raffael.sangria.cluster.ResourceResolver;
 
 
 /**

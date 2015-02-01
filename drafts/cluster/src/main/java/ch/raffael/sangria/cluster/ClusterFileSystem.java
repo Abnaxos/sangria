@@ -1,4 +1,4 @@
-package ch.raffael.sangria.cluster.packaging;
+package ch.raffael.sangria.cluster;
 
 import java.util.stream.Stream;
 
@@ -9,12 +9,6 @@ import ch.raffael.sangria.libs.guava.collect.Iterables;
  * @author <a href="mailto:herzog@raffael.ch">Raffael Herzog</a>
  */
 public interface ClusterFileSystem extends AutoCloseable {
-
-    String getClusterId();
-    String getClusterVersion();
-    String getClusterDescription();
-    String getClusterVendor();
-    String getClusterLicense();
 
     Attributes getAttributes();
 

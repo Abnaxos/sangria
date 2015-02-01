@@ -1,4 +1,4 @@
-package ch.raffael.sangria.cluster.packaging;
+package ch.raffael.sangria.cluster;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.security.CodeSigner;
 import java.security.CodeSource;
-import java.security.cert.Certificate;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.jar.JarEntry;
@@ -20,7 +18,7 @@ import ch.raffael.sangria.libs.guava.base.Functions;
 import ch.raffael.sangria.libs.guava.collect.ImmutableList;
 import ch.raffael.sangria.libs.guava.collect.Iterables;
 
-import ch.raffael.sangria.cluster.packaging.security.SecureCodeSourceSupplier;
+import ch.raffael.sangria.cluster.security.SecureCodeSourceSupplier;
 import ch.raffael.sangria.commons.GuavaCollectors;
 
 import static ch.raffael.sangria.commons.Curry.curry;
@@ -33,24 +31,9 @@ import static ch.raffael.sangria.commons.Unchecked.unchecked;
  */
 public class ClusterArchive implements ClusterFileSystem {
 
-    public static final String ATTR_CLUSTER_ID = "Sangria-Cluster-Id";
-    public static final String ATTR_CLUSTER_VERSION = "Sangria-Cluster-Version";
-    public static final String ATTR_CLUSTER_DESCRIPTION = "Sangria-Cluster-Description";
-    public static final String ATTR_CLUSTER_VENDOR = "Sangria-Cluster-Vendor";
-    public static final String ATTR_CLUSTER_LICENSE = "Sangria-Cluster-License";
     public static final String ATTR_CLUSTER_ROOTS = "Sangria-Cluster-Roots";
 
-    // for resource
-    private static final Certificate[] NO_CERTIFICATES = new Certificate[0];
-    private static final CodeSigner[] NO_CODE_SIGNERS = new CodeSigner[0];
-
     private final JarFile jar;
-
-    private final String clusterId;
-    private final String clusterVersion;
-    private final String clusterDescription;
-    private final String clusterVendor;
-    private final String clusterLicense;
 
     private final URL location;
 
@@ -61,17 +44,6 @@ public class ClusterArchive implements ClusterFileSystem {
         this.jar = jar;
         this.location = location;
         mainResolver = new JarResourceResolver(jar);
-        clusterId = mainResolver.getAttributes().get(ATTR_CLUSTER_ID);
-        if ( clusterId == null ) {
-            throw new ClusterFormatException("No Cluster ID found");
-        }
-        clusterVersion = mainResolver.getAttributes().get(ATTR_CLUSTER_ID);
-        if ( clusterVersion == null ) {
-            throw new ClusterFormatException("No Cluster version found");
-        }
-        clusterDescription = mainResolver.getAttributes().get(ATTR_CLUSTER_DESCRIPTION);
-        clusterVendor = mainResolver.getAttributes().get(ATTR_CLUSTER_VENDOR);
-        clusterLicense = mainResolver.getAttributes().get(ATTR_CLUSTER_LICENSE);
         String rootsAttr = mainResolver.getAttributes().get(ATTR_CLUSTER_ROOTS);
         if ( rootsAttr != null && !rootsAttr.trim().isEmpty() ) {
             roots = throwingCall(IOException.class,
@@ -145,31 +117,6 @@ public class ClusterArchive implements ClusterFileSystem {
 
     private static File toFile(String file) {
         return new File(file);
-    }
-
-    @Override
-    public String getClusterId() {
-        return clusterId;
-    }
-
-    @Override
-    public String getClusterVersion() {
-        return clusterVersion;
-    }
-
-    @Override
-    public String getClusterDescription() {
-        return clusterDescription;
-    }
-
-    @Override
-    public String getClusterVendor() {
-        return clusterVendor;
-    }
-
-    @Override
-    public String getClusterLicense() {
-        return clusterLicense;
     }
 
     @Override

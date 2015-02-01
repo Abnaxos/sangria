@@ -22,23 +22,6 @@
  * THE SOFTWARE.
  */
 
-def category(String category, String... includes) {
-    includes.each { path ->
-        def fullPath = "$category:$path"
-        if ( new File(rootDir, fullPath.replace(':', File.separator)).directory ) {
-            include fullPath
-        }
-    }
-}
-
-include 'test-commons'
-
-include 'commons', 'logging', 'dynamic', 'eventbus'
-
-category 'drafts',
-         'manifest', 'traits', 'cluster'
-
-if ( 'true'.equalsIgnoreCase(properties.includeShelf) ) {
-    category 'shelf',
-             'annotations', 'core', 'integrations:gradle'
+dependencies {
+    compile project(':commons')
 }
